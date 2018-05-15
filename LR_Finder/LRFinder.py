@@ -30,7 +30,6 @@ class LRFinder(Callback):
         epochs: Number of epochs to run experiment. Usually between 1 and 5 is sufficient.
 
     # References
-        Blog post: jeremyjordan.me/nn-learning-rate
         Original paper: https://arxiv.org/abs/1506.01186
     '''
 
