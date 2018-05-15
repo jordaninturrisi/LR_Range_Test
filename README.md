@@ -19,15 +19,15 @@ hist = model.fit(x_train, y_train, epochs=EPOCHS, batch_size=BATCH_SIZE, callbac
 ```python
 # Plot the learning rate against iteration & loss
 lr_finder.plot_lr()
-![Loss function](/img/learning_rate_loss_iteration.png)
+![Learning Rate](https://github.com/jordaninturrisi/LR_Range_Test/img/learning_rate_loss_iteration.png)
 
 # Plot loss against learning rate
 lr_finder.plot(monitor='loss')
-![Loss function](/img/loss_vs_learning_rate.png)
+![Loss](https://github.com/jordaninturrisi/LR_Range_Test/img/loss_vs_learning_rate.png)
 
 # Plot accuracy against learning rate
 lr_finder.plot(monitor='acc')
-![Loss function](/img/accuracy_vs_learning_rate.png)
+![Accuracy](https://github.com/jordaninturrisi/LR_Range_Test/img/accuracy_vs_learning_rate.png)
 
 ```
 
