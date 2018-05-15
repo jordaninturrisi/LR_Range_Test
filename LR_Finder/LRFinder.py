@@ -7,8 +7,8 @@ from scipy.signal import savgol_filter
 import warnings
 import math
 
-class LRFinder(Callback):
 
+class LRFinder(Callback):
     '''
     A simple callback for finding the optimal learning rate range for your model + dataset.
 
@@ -16,9 +16,9 @@ class LRFinder(Callback):
         ```python
             lr_finder = LRFinder(min_lr=1e-5,
                                  max_lr=1e-2,
-                                 steps_per_epoch=np.ceil(epoch_size/batch_size),
-                                 epochs=3)
-            model.fit(X_train, Y_train, callbacks=[lr_finder])
+                                 steps_per_epoch=np.ceil(data_size/batch_size),
+                                 epochs=5)
+            model.fit(x_train, y_train, epochs=EPOCHS, batch_size=BATCH_SIZE, callbacks=[lr_finder])
 
             lr_finder.plot_loss()
         ```
@@ -26,8 +26,8 @@ class LRFinder(Callback):
     # Arguments
         min_lr: The lower bound of the learning rate range for the experiment.
         max_lr: The upper bound of the learning rate range for the experiment.
-        steps_per_epoch: Number of mini-batches in the dataset. Calculated as `np.ceil(epoch_size/batch_size)`.
-        epochs: Number of epochs to run experiment. Usually between 2 and 4 epochs is sufficient.
+        steps_per_epoch: Number of mini-batches in the dataset. Calculated as `np.ceil(data_size/batch_size)`.
+        epochs: Number of epochs to run experiment. Usually between 1 and 5 is sufficient.
 
     # References
         Blog post: jeremyjordan.me/nn-learning-rate
