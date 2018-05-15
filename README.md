@@ -46,4 +46,4 @@ This code is based on:
 - ["Estimating an Optimal Learning Rate For a Deep Neural Network"](https://towardsdatascience.com/estimating-optimal-learning-rate-for-a-deep-neural-network-ce32f2556ce0) by Pavel Surmenok. Implementation code available [here](https://github.com/surmenok/keras_lr_finder).
 - ["CLR"](https://github.com/bckenstler/CLR) repository by Brad Kenstler
 - ["Learning-Rate"](https://github.com/nathanhubens/Learning-Rate) repository by Nathan Hubens
-- [fastaiv2keras](https://github.com/metachi/fastaiv2keras) repository
+- ["fastaiv2keras"](https://github.com/metachi/fastaiv2keras) repository
