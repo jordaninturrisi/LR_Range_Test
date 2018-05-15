@@ -16,6 +16,7 @@ lr_finder = LRFinder(min_lr=1e-4, max_lr=1e1, steps_per_epoch=int(len(x_train)/B
 hist = model.fit(x_train, y_train, epochs=EPOCHS, batch_size=BATCH_SIZE, callbacks=[lr_finder])
 ```
 
+## Observe results
 ```python
 # Plot the learning rate against iteration & loss
 lr_finder.plot_lr()
@@ -23,13 +24,13 @@ lr_finder.plot_lr()
 ![Learning Rate](/img/learning_rate_loss_iteration.png)
 
 ```python
-# Plot loss against learning rate
+# Plot loss against learning rate (with derivative of loss)
 lr_finder.plot(monitor='loss')
 ```
 ![Loss](/img/loss_vs_learning_rate.png)
 
 ```python
-# Plot accuracy against learning rate
+# Plot accuracy against learning rate (with derivative of accuracy)
 lr_finder.plot(monitor='acc')
 ```
 ![Accuracy](/img/accuracy_vs_learning_rate.png)
