@@ -44,6 +44,7 @@ This code is based on:
 - The method described in section 3.3 of the 2015 paper ["Cyclical Learning Rates for Training Neural Networks"](https://arxiv.org/abs/1506.01186) by Leslie N. Smith
 - The implementation of the algorithm in [fastai library](https://github.com/fastai/fastai) by Jeremy Howard. See [fast.ai deep learning course](http://course.fast.ai/) for details.
 - ["Estimating an Optimal Learning Rate For a Deep Neural Network"](https://towardsdatascience.com/estimating-optimal-learning-rate-for-a-deep-neural-network-ce32f2556ce0) by Pavel Surmenok. Implementation code available [here](https://github.com/surmenok/keras_lr_finder).
+- ["Setting the learning rate of your neural network"](https://www.jeremyjordan.me/nn-learning-rate/) by Jeremy Jordan
 - ["CLR"](https://github.com/bckenstler/CLR) repository by Brad Kenstler
 - ["Learning-Rate"](https://github.com/nathanhubens/Learning-Rate) repository by Nathan Hubens
 - ["fastaiv2keras"](https://github.com/metachi/fastaiv2keras) repository
