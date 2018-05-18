@@ -33,7 +33,7 @@ class LRFinder(Callback):
         Original paper: https://arxiv.org/abs/1506.01186
     '''
 
-    def __init__(self, min_lr=1e-5, max_lr=1e0, steps_per_epoch=None, epochs=None, monitor='loss', early_stop=True, linear=False):
+    def __init__(self, min_lr=1e-5, max_lr=1e0, steps_per_epoch=None, epochs=None, early_stop=True, linear=False):
         super().__init__()
 
         self.min_lr = min_lr
@@ -42,8 +42,8 @@ class LRFinder(Callback):
         self.iteration = 0
         self.history = {}
         self.linear = linear
-        self.monitor = monitor
         self.best_loss = 1e9   # Initialise to some large number
+        self.best_acc = 0    # initialise to zero
         self.early_stop = early_stop
 
         if self.linear:
@@ -78,56 +78,64 @@ class LRFinder(Callback):
 
         K.set_value(self.model.optimizer.lr, self.clr())
 
-        # Stop LR Range Test if loss increases 2x more than best
+        # Stop LR Range Test if loss increases 2x more than best or accuracy is half of best accuracy
         if self.early_stop == True:
-            current = logs.get(self.monitor)
-            if current is None:
-                warnings.warn("Early stopping requires %s available!" % self.monitor, RuntimeWarning)
+            loss = logs.get('loss')
+            acc = logs.get('acc')
 
-            if current < self.best_loss:
-                self.best_loss = current
+            if loss is None:
+                warnings.warn("Early stopping requires %s available!" % 'loss', RuntimeWarning)
 
-            if math.isnan(current) or current > (self.best_loss*2):
+            if loss < self.best_loss: self.best_loss = loss
+            if acc > self.best_acc: self.best_acc = acc
+
+            if math.isnan(loss) or loss > (self.best_loss*3) or acc < (self.best_acc/3):
                 print('\nBatch %05d: LR range test -- early stopping' % epoch)
                 self.model.stop_training = True
-                return
+
 
     def plot_lr(self):
         '''Helper function to quickly inspect the learning rate schedule.'''
-        plt.figure(figsize=(12,4))
+        plt.figure(figsize=(18,4))
 
-        plt.subplot(1, 2, 1)
+        plt.subplot(1, 3, 1)
         plt.plot(self.history['iterations'], self.history['lr'])
         plt.yscale('linear')
-        plt.xlabel('Iteration', fontsize=12)
-        plt.ylabel('Learning rate', fontsize=12)
+        plt.xlabel('Iteration', fontsize=14)
+        plt.ylabel('Learning rate', fontsize=14)
 
-        plt.subplot(1, 2, 2)
+        plt.subplot(1, 3, 2)
         plt.plot(self.history['lr'], self.history['loss'])
         plt.xscale('log')
-        plt.xlabel('Learning rate', fontsize=12)
-        plt.ylabel('Loss', fontsize=12)
+        plt.xlabel('Learning rate', fontsize=14)
+        plt.ylabel('Loss', fontsize=14)
+
+        plt.subplot(1, 3, 3)
+        plt.plot(self.history['lr'], self.history['acc'])
+        plt.xscale('log')
+        plt.xlabel('Learning rate', fontsize=14)
+        plt.ylabel('Accuracy', fontsize=14)
 
         plt.show()
 
 
-    def plot(self, monitor='loss'):
+    def plot(self, monitor='loss', skip_start=10, skip_end=5):
         '''Helper function to quickly observe the learning rate experiment results.'''
-        # result = savgol_filter(self.history[monitor], 51, 2) # window size 251, polynomial order 2
-        result = smooth_curve(self.history[monitor], 0.98)
+        result = savgol_filter(self.history[monitor], 51, 2) # window size 51, polynomial order 2
+        # result = smooth_curve(self.history[monitor], 0.98)
 
         dresult = np.array(result[1:]) - np.array(result[:-1])
-        # dresult = savgol_filter(dresult, 51, 2) # window size 251, polynomial order 2
-        dresult = smooth_curve(dresult, 0.98)
+        dresult = savgol_filter(dresult, 51, 2) # window size 51, polynomial order 2
+        # dresult = smooth_curve(dresult, 0.98)
 
         fig, ax1 = plt.subplots(figsize=(8,6))
         ax2 = ax1.twinx()
 
-        ax1.plot(self.history['lr'][10:], result[10:], 'black')
+        ax1.plot(self.history['lr'][skip_start:-skip_end], result[skip_start:-skip_end], 'black')
         ax1.set_ylabel(monitor, color='black', fontsize=16)
         ax1.tick_params('y', colors='black')
 
-        ax2.plot(self.history['lr'][11:], dresult[10:], 'blue', linestyle='--')
+        ax2.plot(self.history['lr'][skip_start+1:-skip_end], dresult[skip_start:-skip_end], 'blue', linestyle='--')
         ax2.set_ylabel('d' + monitor, color='blue', fontsize=16)
         ax2.tick_params('y', colors='blue')
 
